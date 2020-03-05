@@ -173,7 +173,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     String.valueOf(currentLatLng.longitude), countOfTowns, AppConstants.APP_ID)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableObserver<ListWeatherResults>() {
+                    .subscribe(new DisposableObserver<ListWeatherResults>() {
                         @Override
                         public void onNext(ListWeatherResults listWeatherResults) {
                             ArrayList<ListInfo> listWeatherInfo = listWeatherResults.getList();

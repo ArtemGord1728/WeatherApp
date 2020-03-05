@@ -69,7 +69,7 @@ public class ListCitiesFragment extends Fragment
                         String.valueOf(lng), countOfTowns, AppConstants.APP_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<ListWeatherResults>() {
+                .subscribe(new DisposableObserver<ListWeatherResults>() {
                     @Override
                     public void onNext(ListWeatherResults listWeatherResults) {
                         ArrayList<ListInfo> listInfos = listWeatherResults.getList();
