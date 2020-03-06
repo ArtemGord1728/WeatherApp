@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.weather.app.common.AppConstants;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,7 +51,6 @@ public class GPSTracker extends Service implements LocationListener
     protected LocationManager locationManager;
 
     private String provider_info;
-    private static final int DEFAULT_ZOOM = 10;
 
     public GPSTracker(Context context) {
         this.mContext = context;
@@ -200,7 +200,6 @@ public class GPSTracker extends Service implements LocationListener
     {
         if(isLocationPermissionsGranted)
         {
-            map.setMyLocationEnabled(true);
             fusedLocationProviderClient.getLastLocation()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful())
@@ -209,7 +208,7 @@ public class GPSTracker extends Service implements LocationListener
                             LatLng currentLatLng = new LatLng(currentLocation.getLatitude(),
                                     currentLocation.getLongitude());
                             map.addMarker(new MarkerOptions().position(currentLatLng).title("Вы тут!"));
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, AppConstants.DEFAULT_ZOOM));
                         }
                         else {
                             Toast.makeText(activity, "Ошибка! \n Попробуйте повторить попытку позже", Toast.LENGTH_SHORT).show();

@@ -1,11 +1,11 @@
 package com.weather.app.ui.map;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.weather.app.R;
+import com.weather.app.common.SharedPrefUtils;
 import com.weather.app.model.ListInfo;
 import com.weather.app.model.ListWeatherResults;
 import com.weather.app.network.GPSTracker;
@@ -36,7 +37,11 @@ import com.weather.app.common.AppConstants;
 
 import java.util.ArrayList;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -47,6 +52,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     private FusedLocationProviderClient fusedLocationProviderClient;
     private MarkerOptions markerOptions;
     private LatLng currentLatLng;
+
+    private SharedPreferences preferences;
+    private ArrayList<ListInfo> savedListInfo;
 
     private GPSTracker gpsTracker;
 
@@ -64,6 +72,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         View root = inflater.inflate(R.layout.fragment_map, container, false);
 
         gpsTracker = new GPSTracker(getActivity());
+        preferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
 
         getLocationPermissions();
         if(isLocationPermissionsGranted)
@@ -75,8 +84,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
         retrofit = RetrofitClient.getRetrofit();
         openWeatherAPI = retrofit.create(OpenWeatherAPI.class);
+        Log.d("aasd", "On Create View");
 
         return root;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        MapsStateUtil.saveMapState(map, preferences);
     }
 
     public void getLocationPermissions()
@@ -91,16 +107,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     == PackageManager.PERMISSION_GRANTED)
             {
                 isLocationPermissionsGranted = true;
+
             }
             else {
                 ActivityCompat.requestPermissions(getActivity(),
                         permissions, REQUEST_CODE);
+
             }
         }
         else {
             ActivityCompat.requestPermissions(getActivity(),
                     permissions, REQUEST_CODE);
-            Toast.makeText(getActivity(), "Go to Список", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -143,18 +160,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     }
 
 
-
-    @SuppressLint("CheckResult")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        gpsTracker.getDeviceLocation(isLocationPermissionsGranted,
-                map, fusedLocationProviderClient, getActivity());
+        map.setMyLocationEnabled(true);
 
         markerOptions = new MarkerOptions();
 
-        map.setOnMapClickListener(latLng -> {
+        map.setOnMapClickListener(latLng ->
+        {
             currentLatLng = latLng;
 
             map.clear();
@@ -163,19 +178,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
             map.addMarker(markerOptions.position(currentLatLng));
 
-            SharedPreferences preferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong(AppConstants.SAVE_FLAG_1, Double.doubleToRawLongBits(currentLatLng.latitude));
-            editor.putLong(AppConstants.SAVE_FLAG_2, Double.doubleToRawLongBits(currentLatLng.longitude));
+            SharedPrefUtils.getInstance().putDouble(editor, AppConstants.SAVE_FLAG_1, currentLatLng.latitude);
+            SharedPrefUtils.getInstance().putDouble(editor, AppConstants.SAVE_FLAG_2, currentLatLng.longitude);
             editor.apply();
 
             openWeatherAPI.getWeatherResultForTowns(String.valueOf(currentLatLng.latitude),
                     String.valueOf(currentLatLng.longitude), countOfTowns, AppConstants.APP_ID)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<ListWeatherResults>() {
+                    .subscribe(new SingleObserver<ListWeatherResults>() {
                         @Override
-                        public void onNext(ListWeatherResults listWeatherResults) {
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onSuccess(ListWeatherResults listWeatherResults) {
                             ArrayList<ListInfo> listWeatherInfo = listWeatherResults.getList();
 
                             for (int i = 0; i < listWeatherInfo.size(); i++)
@@ -190,6 +208,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                                 map.addMarker(markerOptions.position(new LatLng(lat, lng))
                                         .title(nameLocality + ", " + nameCountry)
                                         .snippet(temperature + " °C, " + windSpeed + " м/с"));
+
+
+                                SharedPrefUtils.getInstance().putDouble(editor, AppConstants.TEMPERATURE, temperature);
+                                SharedPrefUtils.getInstance().putDouble(editor, AppConstants.WIND_SPEED, windSpeed);
+                                SharedPrefUtils.getInstance().putDouble(editor, AppConstants.LAT, lat);
+                                SharedPrefUtils.getInstance().putDouble(editor, AppConstants.LNG, lng);
+                                //SharedPrefUtils.getInstance().putString(editor, AppConstants.NAME_LOCAL, nameLocality);
+                                //SharedPrefUtils.getInstance().putString(editor, AppConstants.NAME_COUNTRY, nameCountry);
                             }
                         }
 
@@ -198,11 +224,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                             Toast.makeText(getActivity(), "Error - " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
-                        @Override
-                        public void onComplete() {
-                            // Empty
-                        }
                     });
         });
+        MapsStateUtil.getSavedCurrentPosition(preferences, map);
+        MapsStateUtil.getSavedMarkers(preferences, map);
     }
 }

@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface OpenWeatherAPI
 {
     @GET("find")
-    Observable<ListWeatherResults> getWeatherResultForTowns(@Query("lat") String latitude,
+    Single<ListWeatherResults> getWeatherResultForTowns(@Query("lat") String latitude,
                                                             @Query("lon") String lon,
                                                             @Query("cnt") int cnt,
                                                             @Query("appid") String appId);

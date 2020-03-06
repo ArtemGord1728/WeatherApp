@@ -27,7 +27,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -69,9 +71,15 @@ public class ListCitiesFragment extends Fragment
                         String.valueOf(lng), countOfTowns, AppConstants.APP_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ListWeatherResults>() {
+                .subscribe(new SingleObserver<ListWeatherResults>() {
+
                     @Override
-                    public void onNext(ListWeatherResults listWeatherResults) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(ListWeatherResults listWeatherResults) {
                         ArrayList<ListInfo> listInfos = listWeatherResults.getList();
                         arrayList.addAll(listInfos);
                         citiesAdapter.setListCities(arrayList);
@@ -82,10 +90,6 @@ public class ListCitiesFragment extends Fragment
                         Toast.makeText(getActivity(), "Error - " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
-                    @Override
-                    public void onComplete() {
-                        //
-                    }
                 });
         recyclerViewCities.setAdapter(citiesAdapter);
         return root;
