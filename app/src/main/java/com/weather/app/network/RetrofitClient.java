@@ -1,20 +1,5 @@
 package com.weather.app.network;
 
-import android.app.Activity;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.weather.app.common.AppConstants;
-import com.weather.app.model.ListInfo;
-import com.weather.app.model.ListWeatherResults;
-
-import java.util.ArrayList;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
