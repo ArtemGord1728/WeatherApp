@@ -207,7 +207,6 @@ public class GPSTracker extends Service implements LocationListener
                             Location currentLocation = task.getResult();
                             LatLng currentLatLng = new LatLng(currentLocation.getLatitude(),
                                     currentLocation.getLongitude());
-                            map.addMarker(new MarkerOptions().position(currentLatLng).title("Вы тут!"));
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, AppConstants.DEFAULT_ZOOM));
                         }
                         else {

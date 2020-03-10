@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
@@ -44,13 +43,14 @@ public class ListCitiesFragment extends Fragment
 
     private GPSTracker gpsTracker;
     private SharedPreferences sharedPreferences;
-    private final int countOfTowns = 20;
 
+    
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_list_cities, container, false);
         ButterKnife.bind(this, root);
+        setRetainInstance(true);
 
         Retrofit retrofit = RetrofitClient.getRetrofit();
         OpenWeatherAPI openWeatherAPI = retrofit.create(OpenWeatherAPI.class);
@@ -60,7 +60,7 @@ public class ListCitiesFragment extends Fragment
 
         gpsTracker = new GPSTracker(getActivity());
 
-        sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(AppConstants.PREFERENCES, Context.MODE_PRIVATE);
         double lat = SharedPrefUtils.getInstance().getDouble(sharedPreferences, AppConstants.SAVE_FLAG_1, 0.0f);
         double lng = SharedPrefUtils.getInstance().getDouble(sharedPreferences, AppConstants.SAVE_FLAG_2, 0.0f);
 
@@ -68,7 +68,8 @@ public class ListCitiesFragment extends Fragment
         recyclerViewCities.setHasFixedSize(true);
 
         openWeatherAPI.getWeatherResultForTowns(String.valueOf(lat),
-                        String.valueOf(lng), countOfTowns, AppConstants.APP_ID)
+                        String.valueOf(lng),
+                AppConstants.COUNT_TOWNS, AppConstants.APP_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<ListWeatherResults>() {
@@ -80,8 +81,8 @@ public class ListCitiesFragment extends Fragment
 
                     @Override
                     public void onSuccess(ListWeatherResults listWeatherResults) {
-                        ArrayList<ListInfo> listInfos = listWeatherResults.getList();
-                        arrayList.addAll(listInfos);
+                        ArrayList<ListInfo> listWeather = listWeatherResults.getList();
+                        arrayList.addAll(listWeather);
                         citiesAdapter.setListCities(arrayList);
                     }
 
