@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.weather.app.R;
-import com.weather.app.common.SharedPrefUtils;
+import com.weather.app.common.TinyDB;
 import com.weather.app.model.ListWeatherInfo;
 import com.weather.app.model.ListWeatherResults;
 import com.weather.app.network.OpenWeatherAPI;
@@ -40,11 +40,10 @@ public class ListCitiesFragment extends Fragment
     CitiesAdapter citiesAdapter;
     private ArrayList<ListWeatherInfo> arrayList;
 
-    private SharedPreferences sharedPreferences;
+    private TinyDB tinyDB;
 
     public static final String SAVE_FLAG_1 = "FLAG_1";
     public static final String SAVE_FLAG_2 = "FLAG_2";
-    public static final String PREFERENCES = "pref";
 
     
     @SuppressLint("CheckResult")
@@ -59,9 +58,10 @@ public class ListCitiesFragment extends Fragment
         arrayList = new ArrayList<>();
         citiesAdapter = new CitiesAdapter(arrayList);
 
-        sharedPreferences = getActivity().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        double lat = SharedPrefUtils.getInstance().getDouble(sharedPreferences, SAVE_FLAG_1, 0.0f);
-        double lng = SharedPrefUtils.getInstance().getDouble(sharedPreferences, SAVE_FLAG_2, 0.0f);
+        tinyDB = new TinyDB(getActivity());
+
+        double lat = tinyDB.getDouble(SAVE_FLAG_1, 0.0f);
+        double lng = tinyDB.getDouble(SAVE_FLAG_2, 0.0f);
 
         recyclerViewCities.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewCities.setHasFixedSize(true);

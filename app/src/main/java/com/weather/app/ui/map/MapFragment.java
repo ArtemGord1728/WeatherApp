@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.weather.app.R;
 import com.weather.app.common.MapsStateUtil;
-import com.weather.app.common.SharedPrefUtils;
 import com.weather.app.common.TinyDB;
 import com.weather.app.model.ListWeatherInfo;
 import com.weather.app.model.ListWeatherResults;
@@ -51,6 +51,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     private SharedPreferences preferences;
 
     //private GPSTracker gpsTracker;
+    private TinyDB tinyDB;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -66,11 +67,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //gpsTracker = new GPSTracker(getActivity());
-        preferences = getActivity().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         retrofit = RetrofitClient.getRetrofit();
         openWeatherAPI = retrofit.create(OpenWeatherAPI.class);
 
+        tinyDB = new TinyDB(getActivity());
 
         return inflater.inflate(R.layout.fragment_map,
                 container,
@@ -83,8 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         initMap();
     }
 
-    private boolean isLocationPermissionsGranted()
-    {
+    private boolean isLocationPermissionsGranted() {
         return ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getActivity(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
@@ -120,8 +121,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
+    public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
         if(isLocationPermissionsGranted())
@@ -150,10 +150,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                     .position(currentLatLng));
 
-            SharedPreferences.Editor editor = preferences.edit();
-            SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_1, currentLatLng.latitude);
-            SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_2, currentLatLng.longitude);
-            editor.apply();
+            tinyDB.putDouble(SAVE_FLAG_1, currentLatLng.latitude);
+            tinyDB.putDouble(SAVE_FLAG_2, currentLatLng.longitude);
 
             openWeatherAPI.getWeatherResultForTowns(String.valueOf(currentLatLng.latitude),
                     String.valueOf(currentLatLng.longitude), AppConstants.COUNT_TOWNS, AppConstants.APP_ID)
@@ -180,12 +178,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                                 map.addMarker(new MarkerOptions()
                                         .position(new LatLng(lat, lng))
                                         .title(nameLocality + ", " + nameCountry)
-                                        .snippet(temperature + Objects.requireNonNull(getActivity()).getString(R.string.celciy) + ", " + windSpeed
-                                                + Objects.requireNonNull(getActivity()).getString(R.string.metre_sec))
+                                        .snippet(temperature + Objects.requireNonNull(getResources()).getString(R.string.celciy) + ", " + windSpeed
+                                                + Objects.requireNonNull(getResources()).getString(R.string.metre_sec))
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
 
-                                TinyDB tinyDB = new TinyDB(getActivity());
                                 tinyDB.putListObject("key", listWeatherInfo);
                             }
                         }
@@ -197,15 +194,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     });
 
         });
-        MapsStateUtil.showSavedCurrentPosition(preferences, map); 
+        MapsStateUtil.showSavedCurrentPosition(preferences, map);
         MapsStateUtil.showSavedMarkers(map, getActivity());
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        if(map != null) {
-            outState.putParcelable(AppConstants.CAMERA_POS, map.getCameraPosition());
-            super.onSaveInstanceState(outState);
-        }
     }
 }
