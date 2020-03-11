@@ -197,7 +197,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     });
 
         });
-        MapsStateUtil.showSavedCurrentPosition(preferences, map);
+        MapsStateUtil.showSavedCurrentPosition(preferences, map); 
         MapsStateUtil.showSavedMarkers(map, getActivity());
     }
 
