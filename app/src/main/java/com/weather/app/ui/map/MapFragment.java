@@ -64,12 +64,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
     private OpenWeatherAPI openWeatherAPI;
 
+    public static final String SAVE_FLAG_1 = "FLAG_1";
+    public static final String SAVE_FLAG_2 = "FLAG_2";
+    public static final String PREFERENCES = "pref";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         setRetainInstance(true);
         gpsTracker = new GPSTracker(getActivity());
-        preferences = getActivity().getSharedPreferences(AppConstants.PREFERENCES, Context.MODE_PRIVATE);
+        preferences = getActivity().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         retrofit = RetrofitClient.getRetrofit();
@@ -169,8 +173,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     .position(currentLatLng));
 
             SharedPreferences.Editor editor = preferences.edit();
-            SharedPrefUtils.getInstance().putDouble(editor, AppConstants.SAVE_FLAG_1, currentLatLng.latitude);
-            SharedPrefUtils.getInstance().putDouble(editor, AppConstants.SAVE_FLAG_2, currentLatLng.longitude);
+            SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_1, currentLatLng.latitude);
+            SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_2, currentLatLng.longitude);
             editor.apply();
 
             openWeatherAPI.getWeatherResultForTowns(String.valueOf(currentLatLng.latitude),

@@ -17,12 +17,15 @@ import java.util.ArrayList;
 public class MapsStateUtil
 {
 
+    public static final String SAVE_FLAG_1 = "FLAG_1";
+    public static final String SAVE_FLAG_2 = "FLAG_2";
+
     public static void saveMapState(GoogleMap mapMie /*, ArrayList<ListInfo> listWeatherInfo*/, SharedPreferences mapStatePrefs) {
         SharedPreferences.Editor editor = mapStatePrefs.edit();
         CameraPosition position = mapMie.getCameraPosition();
 
-        SharedPrefUtils.getInstance().putDouble(editor, AppConstants.SAVE_FLAG_1, position.target.latitude);
-        SharedPrefUtils.getInstance().putDouble(editor, AppConstants.SAVE_FLAG_2, position.target.longitude);
+        SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_1, position.target.latitude);
+        SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_2, position.target.longitude);
 
         editor.apply();
 
@@ -30,8 +33,8 @@ public class MapsStateUtil
 
     public static void getSavedCurrentPosition(SharedPreferences mapStatePrefs, GoogleMap map)
     {
-        double latitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, AppConstants.SAVE_FLAG_1, 0.0f);
-        double longitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, AppConstants.SAVE_FLAG_2, 0.0f);
+        double latitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, SAVE_FLAG_1, 0.0f);
+        double longitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, SAVE_FLAG_2, 0.0f);
 
         map.clear();
 

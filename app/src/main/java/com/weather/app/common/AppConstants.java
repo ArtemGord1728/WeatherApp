@@ -5,9 +5,6 @@ import android.view.ViewDebug;
 public class AppConstants
 {
     public static final String APP_ID = "ac118170f9985540d28cea2572d6fc73";
-    public static final String SAVE_FLAG_1 = "FLAG_1";
-    public static final String SAVE_FLAG_2 = "FLAG_2";
-    public static final String PREFERENCES = "pref";
     public static final float DEFAULT_ZOOM = 9.5f;
     public static final int REQUEST_CODE = 1024;
 

@@ -44,6 +44,10 @@ public class ListCitiesFragment extends Fragment
     private GPSTracker gpsTracker;
     private SharedPreferences sharedPreferences;
 
+    public static final String SAVE_FLAG_1 = "FLAG_1";
+    public static final String SAVE_FLAG_2 = "FLAG_2";
+    public static final String PREFERENCES = "pref";
+
     
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,9 +64,9 @@ public class ListCitiesFragment extends Fragment
 
         gpsTracker = new GPSTracker(getActivity());
 
-        sharedPreferences = getActivity().getSharedPreferences(AppConstants.PREFERENCES, Context.MODE_PRIVATE);
-        double lat = SharedPrefUtils.getInstance().getDouble(sharedPreferences, AppConstants.SAVE_FLAG_1, 0.0f);
-        double lng = SharedPrefUtils.getInstance().getDouble(sharedPreferences, AppConstants.SAVE_FLAG_2, 0.0f);
+        sharedPreferences = getActivity().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        double lat = SharedPrefUtils.getInstance().getDouble(sharedPreferences, SAVE_FLAG_1, 0.0f);
+        double lng = SharedPrefUtils.getInstance().getDouble(sharedPreferences, SAVE_FLAG_2, 0.0f);
 
         recyclerViewCities.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewCities.setHasFixedSize(true);
