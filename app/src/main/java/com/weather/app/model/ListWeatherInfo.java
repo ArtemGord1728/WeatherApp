@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ListInfo
+public class ListWeatherInfo
 {
     private int id ;
     private String name;
