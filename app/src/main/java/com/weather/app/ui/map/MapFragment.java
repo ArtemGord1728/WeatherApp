@@ -59,14 +59,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
     private OpenWeatherAPI openWeatherAPI;
 
-    public static final String SAVE_FLAG_1 = "FLAG_1";
-    public static final String SAVE_FLAG_2 = "FLAG_2";
-    public static final String PREFERENCES = "pref";
+    private static final String SAVE_FLAG_1 = "FLAG_1";
+    private static final String SAVE_FLAG_2 = "FLAG_2";
+    private static final String PREFERENCES = "pref";
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        gpsTracker = new GPSTracker(getActivity());
+        gpsTracker = new GPSTracker();
         preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         retrofit = RetrofitClient.getRetrofit();

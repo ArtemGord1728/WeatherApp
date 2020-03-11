@@ -1,15 +1,5 @@
 package com.weather.app.common;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-
-import com.google.gson.Gson;
-import com.weather.app.model.ListWeatherInfo;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -19,6 +9,16 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.weather.app.model.ListWeatherInfo;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 
 public class TinyDB
@@ -230,7 +230,7 @@ public class TinyDB
     	ArrayList<String> objStrings = getListString(key);
     	ArrayList<ListWeatherInfo> objects =  new ArrayList<ListWeatherInfo>();
 
-    	for(String jObjString : objStrings){
+    	for(String jObjString : objStrings) {
             ListWeatherInfo value  = gson.fromJson(jObjString,  mClass);
     		objects.add(value);
     	}

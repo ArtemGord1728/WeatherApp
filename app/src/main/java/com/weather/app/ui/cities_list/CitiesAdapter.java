@@ -36,7 +36,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         ListWeatherInfo weatherResult = listCities.get(position);
         String isMoreThanZero = weatherResult.getMain().getTemp() > 0 ? "+" : "";
         holder.city_tv.setText(new StringBuilder("Город: " + weatherResult.getName()));
-        holder.temp_tv.setText(new StringBuilder("Темп-тура, °C \n" + isMoreThanZero + weatherResult.getMain().getTemp()));
+        holder.temp_tv.setText(new StringBuilder("Темп-тура \n" + isMoreThanZero + weatherResult.getMain().getTemp() + " °C"));
         holder.weather_main_tv.setText(new StringBuilder("Влажность \n" + weatherResult.getMain().getHumidity()).append(" %"));
         holder.weather_pressure_tv.setText(new StringBuilder("Давление \n" + weatherResult.getMain().getPressure()).append(" hpa"));
     }
