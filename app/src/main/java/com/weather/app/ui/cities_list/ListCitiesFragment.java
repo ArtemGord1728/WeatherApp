@@ -54,7 +54,6 @@ public class ListCitiesFragment extends Fragment
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_list_cities, container, false);
         ButterKnife.bind(this, root);
-        setRetainInstance(true);
 
         Retrofit retrofit = RetrofitClient.getRetrofit();
         OpenWeatherAPI openWeatherAPI = retrofit.create(OpenWeatherAPI.class);

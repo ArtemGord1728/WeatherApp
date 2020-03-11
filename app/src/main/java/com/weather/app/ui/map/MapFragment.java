@@ -71,7 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        setRetainInstance(true);
         gpsTracker = new GPSTracker(getActivity());
         preferences = getActivity().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());

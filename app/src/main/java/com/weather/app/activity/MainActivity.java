@@ -36,12 +36,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-//        navigationView.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
-//
-//        if(savedInstanceState == null) {
-//            loadFragment(mapFragment);
-//        }
     }
 
     @Override
