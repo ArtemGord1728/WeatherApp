@@ -1,5 +1,6 @@
 package com.weather.app.ui.cities_list;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         return listCities.size();
     }
 
-    class CityViewHolder extends RecyclerView.ViewHolder
+    static class CityViewHolder extends RecyclerView.ViewHolder
     {
         @BindView(R.id.tv_city)
         TextView city_tv;
@@ -65,6 +66,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
         @BindView(R.id.tv_weather_pressure)
         TextView weather_pressure_tv;
+
 
         public CityViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -21,8 +21,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
-public class TinyDB {
-
+public class TinyDB
+{
     private SharedPreferences preferences;
     private String DEFAULT_APP_IMAGEDATA_DIRECTORY;
     private String lastImagePath = "";
@@ -32,18 +32,13 @@ public class TinyDB {
     }
 
 
-    /**
-     * Decodes the Bitmap from 'path' and returns it
-     * @param path image path
-     * @return the Bitmap from 'path'
-     */
+
     public Bitmap getImage(String path) {
         Bitmap bitmapFromPath = null;
         try {
             bitmapFromPath = BitmapFactory.decodeFile(path);
 
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
 
@@ -51,22 +46,12 @@ public class TinyDB {
     }
 
 
-    /**
-     * Returns the String path of the last saved image
-     * @return string path of the last saved image
-     */
+
     public String getSavedImagePath() {
         return lastImagePath;
     }
 
 
-    /**
-     * Saves 'theBitmap' into folder 'theFolder' with the name 'theImageName'
-     * @param theFolder the folder path dir you want to save it to e.g "DropBox/WorkImages"
-     * @param theImageName the name you want to assign to the image file e.g "MeAtLunch.png"
-     * @param theBitmap the image you want to save as a Bitmap
-     * @return returns the full path(file system address) of the saved image
-     */
     public String putImage(String theFolder, String theImageName, Bitmap theBitmap) {
         if (theFolder == null || theImageName == null || theBitmap == null)
             return null;
@@ -83,21 +68,12 @@ public class TinyDB {
     }
 
 
-    /**
-     * Saves 'theBitmap' into 'fullPath'
-     * @param fullPath full path of the image file e.g. "Images/MeAtLunch.png"
-     * @param theBitmap the image you want to save as a Bitmap
-     * @return true if image was saved, false otherwise
-     */
+
     public boolean putImageWithFullPath(String fullPath, Bitmap theBitmap) {
         return !(fullPath == null || theBitmap == null) && saveBitmap(fullPath, theBitmap);
     }
 
-    /**
-     * Creates the path for the image with name 'imageName' in DEFAULT_APP.. directory
-     * @param imageName name of the image
-     * @return the full path of the image. If it failed to create directory, return empty string
-     */
+
     private String setupFullPath(String imageName) {
         File mFolder = new File(Environment.getExternalStorageDirectory(), DEFAULT_APP_IMAGEDATA_DIRECTORY);
 
@@ -111,12 +87,6 @@ public class TinyDB {
         return mFolder.getPath() + '/' + imageName;
     }
 
-    /**
-     * Saves the Bitmap as a PNG file at path 'fullPath'
-     * @param fullPath path of the image file
-     * @param bitmap the image as a Bitmap
-     * @return true if it successfully saved, false otherwise
-     */
     private boolean saveBitmap(String fullPath, Bitmap bitmap) {
         if (fullPath == null || bitmap == null)
             return false;
@@ -166,20 +136,11 @@ public class TinyDB {
 
     // Getters
 
-    /**
-     * Get int value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
-     * @param key SharedPreferences key
-     * @return int value at 'key' or 'defaultValue' if key not found
-     */
     public int getInt(String key) {
         return preferences.getInt(key, 0);
     }
 
-    /**
-     * Get parsed ArrayList of Integers from SharedPreferences at 'key'
-     * @param key SharedPreferences key
-     * @return ArrayList of Integers
-     */
+
     public ArrayList<Integer> getListInt(String key) {
         String[] myList = TextUtils.split(preferences.getString(key, ""), "‚‗‚");
         ArrayList<String> arrayToList = new ArrayList<String>(Arrays.asList(myList));
@@ -191,31 +152,17 @@ public class TinyDB {
         return newList;
     }
 
-    /**
-     * Get long value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
-     * @param key SharedPreferences key
-     * @param defaultValue long value returned if key was not found
-     * @return long value at 'key' or 'defaultValue' if key not found
-     */
+
     public long getLong(String key, long defaultValue) {
         return preferences.getLong(key, defaultValue);
     }
 
-    /**
-     * Get float value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
-     * @param key SharedPreferences key
-     * @return float value at 'key' or 'defaultValue' if key not found
-     */
+
     public float getFloat(String key) {
         return preferences.getFloat(key, 0);
     }
 
-    /**
-     * Get double value from SharedPreferences at 'key'. If exception thrown, return 'defaultValue'
-     * @param key SharedPreferences key
-     * @param defaultValue double value returned if exception is thrown
-     * @return double value at 'key' or 'defaultValue' if exception is thrown
-     */
+
     public double getDouble(String key, double defaultValue) {
         String number = getString(key);
 
@@ -227,11 +174,7 @@ public class TinyDB {
         }
     }
 
-    /**
-     * Get parsed ArrayList of Double from SharedPreferences at 'key'
-     * @param key SharedPreferences key
-     * @return ArrayList of Double
-     */
+
     public ArrayList<Double> getListDouble(String key) {
         String[] myList = TextUtils.split(preferences.getString(key, ""), "‚‗‚");
         ArrayList<String> arrayToList = new ArrayList<String>(Arrays.asList(myList));
@@ -243,11 +186,7 @@ public class TinyDB {
         return newList;
     }
 
-    /**
-     * Get parsed ArrayList of Integers from SharedPreferences at 'key'
-     * @param key SharedPreferences key
-     * @return ArrayList of Longs
-     */
+
     public ArrayList<Long> getListLong(String key) {
         String[] myList = TextUtils.split(preferences.getString(key, ""), "‚‗‚");
         ArrayList<String> arrayToList = new ArrayList<String>(Arrays.asList(myList));
@@ -259,38 +198,16 @@ public class TinyDB {
         return newList;
     }
 
-    /**
-     * Get String value from SharedPreferences at 'key'. If key not found, return ""
-     * @param key SharedPreferences key
-     * @return String value at 'key' or "" (empty String) if key not found
-     */
+
     public String getString(String key) {
         return preferences.getString(key, "");
     }
 
-    /**
-     * Get parsed ArrayList of String from SharedPreferences at 'key'
-     * @param key SharedPreferences key
-     * @return ArrayList of String
-     */
+
     public ArrayList<String> getListString(String key) {
         return new ArrayList<String>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
     }
 
-    /**
-     * Get boolean value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
-     * @param key SharedPreferences key
-     * @return boolean value at 'key' or 'defaultValue' if key not found
-     */
-    public boolean getBoolean(String key) {
-        return preferences.getBoolean(key, false);
-    }
-
-    /**
-     * Get parsed ArrayList of Boolean from SharedPreferences at 'key'
-     * @param key SharedPreferences key
-     * @return ArrayList of Boolean
-     */
     public ArrayList<Boolean> getListBoolean(String key) {
         ArrayList<String> myList = getListString(key);
         ArrayList<Boolean> newList = new ArrayList<Boolean>();
@@ -337,7 +254,7 @@ public class TinyDB {
     public void putListObject(String key, ArrayList<ListWeatherInfo> objArray){
         checkForNullKey(key);
         Gson gson = new Gson();
-        ArrayList<String> objStrings = new ArrayList<String>();
+        ArrayList<String> objStrings = new ArrayList<>();
         for(ListWeatherInfo obj : objArray){
             objStrings.add(gson.toJson(obj));
         }
@@ -562,19 +479,15 @@ public class TinyDB {
         return Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
-    /**
-     * null keys would corrupt the shared pref file and make them unreadable this is a preventive measure
-     * @param the pref key
-     */
+
+
     public void checkForNullKey(String key){
         if (key == null){
             throw new NullPointerException();
         }
     }
-    /**
-     * null keys would corrupt the shared pref file and make them unreadable this is a preventive measure
-     * @param the pref key
-     */
+
+
     public void checkForNullValue(String value){
         if (value == null){
             throw new NullPointerException();

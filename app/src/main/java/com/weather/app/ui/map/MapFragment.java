@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import com.weather.app.common.MapsStateUtil;
 import com.weather.app.common.TinyDB;
 import com.weather.app.model.ListWeatherInfo;
 import com.weather.app.model.ListWeatherResults;
+import com.weather.app.network.GPSTracker;
 import com.weather.app.network.OpenWeatherAPI;
 import com.weather.app.network.RetrofitClient;
 import com.weather.app.common.AppConstants;
@@ -50,7 +50,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
     private SharedPreferences preferences;
 
-    //private GPSTracker gpsTracker;
+    private GPSTracker gpsTracker;
     private TinyDB tinyDB;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -66,7 +66,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //gpsTracker = new GPSTracker(getActivity());
+        gpsTracker = new GPSTracker(getActivity());
         preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         retrofit = RetrofitClient.getRetrofit();

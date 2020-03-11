@@ -27,11 +27,9 @@ public class MapsStateUtil
         SharedPrefUtils.getInstance().putDouble(editor, SAVE_FLAG_2, position.target.longitude);
 
         editor.apply();
-
     }
 
-    public static void showSavedCurrentPosition(SharedPreferences mapStatePrefs, GoogleMap map)
-    {
+    public static void showSavedCurrentPosition(SharedPreferences mapStatePrefs, GoogleMap map) {
         double latitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, SAVE_FLAG_1, 0.0f);
         double longitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, SAVE_FLAG_2, 0.0f);
 
@@ -47,8 +45,7 @@ public class MapsStateUtil
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(target, AppConstants.DEFAULT_ZOOM));
     }
 
-    public static void showSavedMarkers(GoogleMap map, Context context)
-    {
+    public static void showSavedMarkers(GoogleMap map, Context context) {
         TinyDB tinyDB = new TinyDB(context);
         ArrayList<ListWeatherInfo> list = tinyDB.getListObject("key", ListWeatherInfo.class);
 
