@@ -3,17 +3,13 @@ package com.weather.app.network;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,16 +19,9 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.weather.app.common.AppConstants;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 public class GPSTracker extends Service implements LocationListener {
-
-    private final Context mContext;
 
     boolean isGPSEnabled = false;
 
@@ -52,14 +41,13 @@ public class GPSTracker extends Service implements LocationListener {
 
     private String provider_info;
 
-    public GPSTracker(Context context) {
-        this.mContext = context;
+    public GPSTracker() {
         getLocation();
     }
 
     private void getLocation() {
         try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -88,7 +76,7 @@ public class GPSTracker extends Service implements LocationListener {
                     String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION};
 
-                    ActivityCompat.requestPermissions((Activity) mContext,
+                    ActivityCompat.requestPermissions((Activity) getApplicationContext(),
                             permissions, AppConstants.REQUEST_CODE);
                     return;
                 }
