@@ -1,6 +1,5 @@
 package com.weather.app.ui.cities_list;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
     @Override
     public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
         ListWeatherInfo weatherResult = listCities.get(position);
-        String isMoreThanZero = weatherResult.getMain().getTemp() > 0 ? "+" : "-";
+        String isMoreThanZero = weatherResult.getMain().getTemp() > 0 ? "+" : "";
         holder.city_tv.setText(new StringBuilder("Город: " + weatherResult.getName()));
         holder.temp_tv.setText(new StringBuilder("Темп-тура, °C \n" + isMoreThanZero + weatherResult.getMain().getTemp()));
         holder.weather_main_tv.setText(new StringBuilder("Влажность \n" + weatherResult.getMain().getHumidity()).append(" %"));
