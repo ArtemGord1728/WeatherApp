@@ -9,7 +9,7 @@ public class ListWeatherResults
     private String message;
     private String cod;
     private int count;
-    private ArrayList<ListInfo> list;
+    private ArrayList<ListWeatherInfo> list;
 
 
     @SerializedName("message")
@@ -31,11 +31,11 @@ public class ListWeatherResults
     }
 
     @SerializedName("list")
-    public ArrayList<ListInfo> getList() {
+    public ArrayList<ListWeatherInfo> getList() {
         return list;
     }
 
-    public void setList(ArrayList<ListInfo> list) {
+    public void setList(ArrayList<ListWeatherInfo> list) {
         this.list = list;
     }
 

@@ -2,4 +2,6 @@
     <string name="app_name">WeatherApp</string>
     <string name="title_map">Карта</string>
     <string name="title_list_cities">Список</string>
+    <string name="celciy">°C</string>
+    <string name="metre_sec">м/с</string>
 </resources>

@@ -9,18 +9,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.weather.app.model.ListInfo;
+import com.weather.app.model.ListWeatherInfo;
 
 import java.util.ArrayList;
 
 
 public class MapsStateUtil
 {
+    private static final String SAVE_FLAG_1 = "FLAG_1";
+    private static final String SAVE_FLAG_2 = "FLAG_2";
 
-    public static final String SAVE_FLAG_1 = "FLAG_1";
-    public static final String SAVE_FLAG_2 = "FLAG_2";
-
-    public static void saveMapState(GoogleMap mapMie /*, ArrayList<ListInfo> listWeatherInfo*/, SharedPreferences mapStatePrefs) {
+    public static void saveMapState(GoogleMap mapMie, SharedPreferences mapStatePrefs) {
         SharedPreferences.Editor editor = mapStatePrefs.edit();
         CameraPosition position = mapMie.getCameraPosition();
 
@@ -31,7 +30,7 @@ public class MapsStateUtil
 
     }
 
-    public static void getSavedCurrentPosition(SharedPreferences mapStatePrefs, GoogleMap map)
+    public static void showSavedCurrentPosition(SharedPreferences mapStatePrefs, GoogleMap map)
     {
         double latitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, SAVE_FLAG_1, 0.0f);
         double longitude = SharedPrefUtils.getInstance().getDouble(mapStatePrefs, SAVE_FLAG_2, 0.0f);
@@ -48,10 +47,10 @@ public class MapsStateUtil
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(target, AppConstants.DEFAULT_ZOOM));
     }
 
-    public static void getSavedMarkers(GoogleMap map, Context context)
+    public static void showSavedMarkers(GoogleMap map, Context context)
     {
         TinyDB tinyDB = new TinyDB(context);
-        ArrayList<ListInfo> list = tinyDB.getListObject("key", ListInfo.class);
+        ArrayList<ListWeatherInfo> list = tinyDB.getListObject("key", ListWeatherInfo.class);
 
         for (int i = 0; i < list.size(); i++) {
             double temperature = list.get(i).getMain().getTemp();

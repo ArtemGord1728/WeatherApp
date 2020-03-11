@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.weather.app.model.ListInfo;
+import com.weather.app.model.ListWeatherInfo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -307,14 +307,14 @@ public class TinyDB {
     }
 
 
-    public ArrayList<ListInfo> getListObject(String key, Class<ListInfo> mClass){
+    public ArrayList<ListWeatherInfo> getListObject(String key, Class<ListWeatherInfo> mClass){
     	Gson gson = new Gson();
 
     	ArrayList<String> objStrings = getListString(key);
-    	ArrayList<ListInfo> objects =  new ArrayList<ListInfo>();
+    	ArrayList<ListWeatherInfo> objects =  new ArrayList<ListWeatherInfo>();
 
     	for(String jObjString : objStrings){
-            ListInfo value  = gson.fromJson(jObjString,  mClass);
+            ListWeatherInfo value  = gson.fromJson(jObjString,  mClass);
     		objects.add(value);
     	}
     	return objects;
@@ -334,11 +334,11 @@ public class TinyDB {
 
     // Put methods
 
-    public void putListObject(String key, ArrayList<ListInfo> objArray){
+    public void putListObject(String key, ArrayList<ListWeatherInfo> objArray){
         checkForNullKey(key);
         Gson gson = new Gson();
         ArrayList<String> objStrings = new ArrayList<String>();
-        for(ListInfo obj : objArray){
+        for(ListWeatherInfo obj : objArray){
             objStrings.add(gson.toJson(obj));
         }
         putListString(key, objStrings);

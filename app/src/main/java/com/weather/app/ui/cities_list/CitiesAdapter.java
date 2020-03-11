@@ -8,24 +8,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.weather.app.R;
-import com.weather.app.model.ListInfo;
-import com.weather.app.network.OpenWeatherAPI;
-import com.weather.app.network.RetrofitClient;
+import com.weather.app.model.ListWeatherInfo;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.CompositeDisposable;
-import retrofit2.Retrofit;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHolder>
 {
-    private ArrayList<ListInfo> listCities;
+    private ArrayList<ListWeatherInfo> listCities;
 
-    public CitiesAdapter(ArrayList<ListInfo> listCities) {
+    public CitiesAdapter(ArrayList<ListWeatherInfo> listCities) {
         this.listCities = listCities;
     }
 
@@ -38,7 +33,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
 
     @Override
     public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
-        ListInfo weatherResult = listCities.get(position);
+        ListWeatherInfo weatherResult = listCities.get(position);
         String isMoreThanZero = weatherResult.getMain().getTemp() > 0 ? "+" : "-";
         holder.city_tv.setText(new StringBuilder("Город: " + weatherResult.getName()));
         holder.temp_tv.setText(new StringBuilder("Темп-тура, °C \n" + isMoreThanZero + weatherResult.getMain().getTemp()));
@@ -46,7 +41,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CityViewHo
         holder.weather_pressure_tv.setText(new StringBuilder("Давление \n" + weatherResult.getMain().getPressure()).append(" hpa"));
     }
 
-    public void setListCities(ArrayList<ListInfo> listCities) {
+    public void setListCities(ArrayList<ListWeatherInfo> listCities) {
         this.listCities = listCities;
         notifyItemRangeInserted(0, listCities.size());
     }

@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.weather.app.R;
 import com.weather.app.common.SharedPrefUtils;
-import com.weather.app.model.ListInfo;
+import com.weather.app.model.ListWeatherInfo;
 import com.weather.app.model.ListWeatherResults;
-import com.weather.app.network.GPSTracker;
 import com.weather.app.network.OpenWeatherAPI;
 import com.weather.app.network.RetrofitClient;
 import com.weather.app.common.AppConstants;
@@ -39,7 +38,7 @@ public class ListCitiesFragment extends Fragment
     RecyclerView recyclerViewCities;
 
     CitiesAdapter citiesAdapter;
-    private ArrayList<ListInfo> arrayList;
+    private ArrayList<ListWeatherInfo> arrayList;
 
     private SharedPreferences sharedPreferences;
 
@@ -81,7 +80,7 @@ public class ListCitiesFragment extends Fragment
 
                     @Override
                     public void onSuccess(ListWeatherResults listWeatherResults) {
-                        ArrayList<ListInfo> listWeather = listWeatherResults.getList();
+                        ArrayList<ListWeatherInfo> listWeather = listWeatherResults.getList();
                         arrayList.addAll(listWeather);
                         citiesAdapter.setListCities(arrayList);
                     }
