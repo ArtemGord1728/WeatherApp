@@ -42,10 +42,7 @@ public class ListCitiesFragment extends Fragment
 
     private TinyDB tinyDB;
 
-    public static final String SAVE_FLAG_1 = "FLAG_1";
-    public static final String SAVE_FLAG_2 = "FLAG_2";
 
-    
     @SuppressLint("CheckResult")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,37 +57,13 @@ public class ListCitiesFragment extends Fragment
 
         tinyDB = new TinyDB(getActivity());
 
-        double lat = tinyDB.getDouble(SAVE_FLAG_1, 0.0f);
-        double lng = tinyDB.getDouble(SAVE_FLAG_2, 0.0f);
-
         recyclerViewCities.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewCities.setHasFixedSize(true);
 
-        openWeatherAPI.getWeatherResultForTowns(String.valueOf(lat),
-                        String.valueOf(lng),
-                AppConstants.COUNT_TOWNS, AppConstants.APP_ID)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<ListWeatherResults>() {
+        ArrayList<ListWeatherInfo> listWeather = tinyDB.getListObject("key", ListWeatherInfo.class);
+        arrayList.addAll(listWeather);
+        citiesAdapter.setListCities(arrayList);
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(ListWeatherResults listWeatherResults) {
-                        ArrayList<ListWeatherInfo> listWeather = listWeatherResults.getList();
-                        arrayList.addAll(listWeather);
-                        citiesAdapter.setListCities(arrayList);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(getActivity(), "Error - " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                });
         recyclerViewCities.setAdapter(citiesAdapter);
         return root;
     }
