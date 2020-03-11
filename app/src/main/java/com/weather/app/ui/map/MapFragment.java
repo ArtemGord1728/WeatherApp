@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.weather.app.R;
+import com.weather.app.common.AppConstants;
 import com.weather.app.common.MapsStateUtil;
 import com.weather.app.common.TinyDB;
 import com.weather.app.model.ListWeatherInfo;
@@ -31,7 +32,6 @@ import com.weather.app.model.ListWeatherResults;
 import com.weather.app.network.GPSTracker;
 import com.weather.app.network.OpenWeatherAPI;
 import com.weather.app.network.RetrofitClient;
-import com.weather.app.common.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Objects;
