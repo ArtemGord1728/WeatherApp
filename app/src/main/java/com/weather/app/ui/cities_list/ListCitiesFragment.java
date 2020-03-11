@@ -41,7 +41,6 @@ public class ListCitiesFragment extends Fragment
     CitiesAdapter citiesAdapter;
     private ArrayList<ListInfo> arrayList;
 
-    private GPSTracker gpsTracker;
     private SharedPreferences sharedPreferences;
 
     public static final String SAVE_FLAG_1 = "FLAG_1";
@@ -60,8 +59,6 @@ public class ListCitiesFragment extends Fragment
 
         arrayList = new ArrayList<>();
         citiesAdapter = new CitiesAdapter(arrayList);
-
-        gpsTracker = new GPSTracker(getActivity());
 
         sharedPreferences = getActivity().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         double lat = SharedPrefUtils.getInstance().getDouble(sharedPreferences, SAVE_FLAG_1, 0.0f);
