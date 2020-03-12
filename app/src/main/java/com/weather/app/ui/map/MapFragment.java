@@ -135,7 +135,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         {
             map.setMaxZoomPreference(AppConstants.DEFAULT_ZOOM);
             map.setMyLocationEnabled(true);
-            //gpsTracker.getDeviceLocation(map, fusedLocationProviderClient, getActivity());
         }
         else
         {
@@ -145,9 +144,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
             ActivityCompat.requestPermissions(getActivity(),
                     permissions, AppConstants.REQUEST_CODE);
 
-            gpsTracker.getDefaultLocation(map);
         }
 
+        showDefaultLocation();
 
         map.setOnMapClickListener(latLng ->
         {
@@ -213,5 +212,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
     public void onDestroyView() {
         super.onDestroyView();
         fusedLocationProviderClient = null;
+    }
+
+    public void showDefaultLocation()
+    {
+        final double defaultLat = 47.2262556;
+        final double defaultLng = 39.6964441;
+
+        LatLng defPoint = new LatLng(defaultLat, defaultLng);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defPoint, AppConstants.DEFAULT_ZOOM));
     }
 }
