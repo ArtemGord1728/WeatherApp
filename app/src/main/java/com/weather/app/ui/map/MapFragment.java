@@ -16,6 +16,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -55,17 +57,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private Retrofit retrofit;
 
+    private Retrofit retrofit;
     private OpenWeatherAPI openWeatherAPI;
 
     private static final String SAVE_FLAG_1 = "FLAG_1";
     private static final String SAVE_FLAG_2 = "FLAG_2";
     private static final String PREFERENCES = "pref";
 
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState)
+    {
         gpsTracker = new GPSTracker();
         preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
@@ -73,6 +78,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         openWeatherAPI = retrofit.create(OpenWeatherAPI.class);
 
         tinyDB = new TinyDB(getActivity());
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         return inflater.inflate(R.layout.fragment_map,
                 container,
@@ -128,6 +135,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         {
             map.setMaxZoomPreference(AppConstants.DEFAULT_ZOOM);
             map.setMyLocationEnabled(true);
+            //gpsTracker.getDeviceLocation(map, fusedLocationProviderClient, getActivity());
         }
         else
         {
@@ -136,7 +144,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
 
             ActivityCompat.requestPermissions(getActivity(),
                     permissions, AppConstants.REQUEST_CODE);
+
+            gpsTracker.getDefaultLocation(map);
         }
+
 
         map.setOnMapClickListener(latLng ->
         {
@@ -196,5 +207,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         });
         MapsStateUtil.showSavedCurrentPosition(preferences, map);
         MapsStateUtil.showSavedMarkers(map, getActivity());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fusedLocationProviderClient = null;
     }
 }
