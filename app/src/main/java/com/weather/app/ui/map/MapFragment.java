@@ -135,6 +135,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
         {
             map.setMaxZoomPreference(AppConstants.DEFAULT_ZOOM);
             map.setMyLocationEnabled(true);
+            gpsTracker.getDeviceLocation(map, fusedLocationProviderClient, getActivity());
         }
         else
         {
@@ -204,7 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback
                     });
 
         });
-        MapsStateUtil.showSavedCurrentPosition(preferences, map);
+//        MapsStateUtil.showSavedCurrentPosition(preferences, map);
         MapsStateUtil.showSavedMarkers(map, getActivity());
     }
 

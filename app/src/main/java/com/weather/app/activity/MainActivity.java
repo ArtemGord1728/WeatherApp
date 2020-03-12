@@ -10,16 +10,27 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.weather.app.R;
+import com.weather.app.ui.cities_list.ListCitiesFragment;
+import com.weather.app.ui.map.MapFragment;
 
 public class MainActivity extends AppCompatActivity
 {
+    private MapFragment mapFragment;
+    private ListCitiesFragment listCitiesFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navigationView = findViewById(R.id.nav_view);
+        mapFragment = new MapFragment();
+        listCitiesFragment = new ListCitiesFragment();
 
+        getSupportFragmentManager().beginTransaction()
+                .hide(mapFragment)
+                .hide(listCitiesFragment)
+                .commit();
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_map, R.id.navigation_list_cities)

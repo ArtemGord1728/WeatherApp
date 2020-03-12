@@ -113,18 +113,6 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
 
-    public void getDefaultLocation(GoogleMap map)
-    {
-        final double defaultLat = 47.2262556;
-        final double defaultLng = 39.6964441;
-
-        LatLng defPoint = new LatLng(defaultLat, defaultLng);
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defPoint, AppConstants.DEFAULT_ZOOM));
-    }
-
-
     public void getDeviceLocation(GoogleMap map, FusedLocationProviderClient fusedLocationProviderClient,
                                   Activity activity)
     {
