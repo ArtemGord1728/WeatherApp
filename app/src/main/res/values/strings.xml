@@ -4,4 +4,5 @@
     <string name="title_list_cities">Список</string>
     <string name="celciy">°C</string>
     <string name="metre_sec">м/с</string>
+    <string name="city_str">Город: </string>
 </resources>
