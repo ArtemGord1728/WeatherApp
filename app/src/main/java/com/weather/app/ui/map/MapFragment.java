@@ -127,7 +127,6 @@ public class MapFragment extends Fragment implements LocationListener
 
 
 
-        //Mini map
         mMinimapOverlay = new MinimapOverlay(context, mapView.getTileRequestCompleteHandler());
         mMinimapOverlay.setWidth(dm.widthPixels / 5);
         mMinimapOverlay.setHeight(dm.heightPixels / 5);
