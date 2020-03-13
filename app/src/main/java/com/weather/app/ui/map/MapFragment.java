@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.weather.app.BuildConfig;
+import com.weather.app.R;
 import com.weather.app.common.AppConstants;
 import com.weather.app.common.TinyDB;
 import com.weather.app.network.GPSTracker;
@@ -26,6 +28,7 @@ import com.weather.app.network.OpenWeatherAPI;
 import com.weather.app.network.RetrofitClient;
 
 import org.osmdroid.api.IGeoPoint;
+import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
@@ -46,8 +49,6 @@ import retrofit2.Retrofit;
 
 public class MapFragment extends Fragment implements LocationListener
 {
-    //private SharedPreferences preferences;
-
     private GPSTracker gpsTracker;
     private TinyDB tinyDB;
 
@@ -77,14 +78,18 @@ public class MapFragment extends Fragment implements LocationListener
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
+        View root = inflater.inflate(R.layout.fragment_map, container, false);
         gpsTracker = new GPSTracker();
-        //preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         mapView = new MapView(inflater.getContext());
         mapView.setBuiltInZoomControls(true);
         mapView.setDestroyMode(false);
         mapView.setTag("mapview");
         mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setUseDataConnection(true);
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+        Configuration.getInstance().setOsmdroidTileCache(getContext().getFilesDir());
 
         mapView.setOnGenericMotionListener((v, event) -> {
             if (0 != (event.getSource() & InputDevice.SOURCE_CLASS_POINTER)) {
