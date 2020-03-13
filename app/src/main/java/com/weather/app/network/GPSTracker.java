@@ -10,15 +10,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.weather.app.common.AppConstants;
 
 public class GPSTracker extends Service implements LocationListener {
@@ -113,23 +108,23 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
 
-    public void getDeviceLocation(GoogleMap map, FusedLocationProviderClient fusedLocationProviderClient,
-                                  Activity activity)
-    {
-        fusedLocationProviderClient.getLastLocation()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                    {
-                        Location currentLocation = task.getResult();
-                        LatLng currentLatLng = new LatLng(currentLocation.getLatitude(),
-                                currentLocation.getLongitude());
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, AppConstants.DEFAULT_ZOOM));
-                    }
-                    else {
-                        Toast.makeText(activity, "Ошибка! \n Не удается определить ваше местоположение!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+//    public void getDeviceLocation(GoogleMap map, FusedLocationProviderClient fusedLocationProviderClient,
+//                                  Activity activity)
+//    {
+//        fusedLocationProviderClient.getLastLocation()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful())
+//                    {
+//                        Location currentLocation = task.getResult();
+//                        LatLng currentLatLng = new LatLng(currentLocation.getLatitude(),
+//                                currentLocation.getLongitude());
+//                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, AppConstants.DEFAULT_ZOOM));
+//                    }
+//                    else {
+//                        Toast.makeText(activity, "Ошибка! \n Не удается определить ваше местоположение!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
 
     @Nullable
     @Override
